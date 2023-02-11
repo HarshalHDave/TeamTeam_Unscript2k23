@@ -131,6 +131,7 @@ const KycScreen5 = ({ navigation, route }: any) => {
     const imgLink = await uploadUriFirebase(image);
     const singLink = await uploadUriFirebase(signFile);
     console.log({adLink,demLink,imgLink,singLink,...route.params})
+    navigation.navigate('KycScreen6',{adLink,demLink,imgLink,singLink,...route.params})
     // console.log(image, aadharFile, dematFile, signature);
   };
 

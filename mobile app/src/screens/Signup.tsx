@@ -25,7 +25,9 @@ const Signup = ({ navigation }: any) => {
             cpass: "",
           }}
           onSubmit={(values) => {
-            if (values.cpass === values.pass) auth?.signUp();
+            if (values.cpass === values.pass) {
+              auth?.putIdPass(values.id,values.pass);
+            }
             // auth?.signIn(values.id, values.pass);
           }}
         >
@@ -35,7 +37,7 @@ const Signup = ({ navigation }: any) => {
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Create ID"}
+                    placeholder={"Enter username"}
                     value={values.id}
                     autoCapitalize="none"
                     onChangeText={handleChange("id")}
@@ -62,6 +64,7 @@ const Signup = ({ navigation }: any) => {
                     style={styles.input}
                     placeholder={"Confirm Password"}
                     value={values.cpass}
+                    secureTextEntry
                     autoCapitalize="none"
                     onChangeText={handleChange("cpass")}
                     placeholderTextColor={"grey"}
@@ -73,7 +76,8 @@ const Signup = ({ navigation }: any) => {
                   color: "white",
                   textAlign: "center",
                   marginBottom: 25,
-                  fontSize: 20,
+                  fontSize: 14,
+                  fontFamily: 'm'
                 }}
               >
                 Already have an Account ?
@@ -87,9 +91,11 @@ const Signup = ({ navigation }: any) => {
                 </Text>
               </Text>
               <View style={[styles.container]}>
-                {/* <View style={[styles.searchBar]}> */}
-                <Button title="Submit" onPress={() => handleSubmit()} />
-                {/* </View> */}
+                <TouchableOpacity
+                  onPress={() => handleSubmit()}
+                  style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100 }}>
+                  <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Sign Up</Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -113,16 +119,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     flexDirection: "row",
     width: "99%",
-    borderWidth: 0.6,
+    borderWidth: 1,
     borderColor: "#aea0ae",
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: "center",
     paddingVertical: 8,
   },
   input: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 8,
     width: "100%",
     color: "grey",
+    fontFamily: 'm'
   },
 });

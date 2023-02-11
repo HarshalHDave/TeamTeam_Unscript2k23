@@ -15,7 +15,7 @@ const KycStack = () => {
   return (
     <SafeAreaView style={styles.background_main}>
       <>
-      <Navbar title="KYC Process" />
+        <Navbar title="KYC Process" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="KycScreen1" component={KycScreen1}></Stack.Screen>
           <Stack.Screen name="KycScreen2" component={KycScreen2}></Stack.Screen>

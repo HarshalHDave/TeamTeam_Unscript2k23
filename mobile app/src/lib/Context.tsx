@@ -8,17 +8,43 @@ import React, {
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
+import axios from "axios";
+import { baseUrl } from "./BaseUrl";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthCon {
   user: User;
-  signUp :()=>void
+  signUp: (obj: any) => Promise<true>;
+  signIn: (uname: string, pass: string) => void;
+  putIdPass: (id: string, pass: string) => void;
 }
 interface User {
-  id: string;
-  name: string;
+  aadhar_img: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  createdAt: string;
+  demat_pdf_url: string;
+  dob: string;
   email: string;
+  experience: string;
+  id: 3;
+  income: string;
+  isActive: boolean;
+  isAuth?: boolean;
+  isDeleted: boolean;
+  name: string;
+  phone_number: string;
+  pincode: string;
+  profession: string;
+  profile_img: string;
+  sign_img: string;
+  state: string;
+  updatedAt: string;
+  userType: number;
+  username: string;
   password: string;
-  isVerified: boolean;
+  token:string
 }
 const appContext = createContext<AuthCon | null>(null);
 export function ContextProvider({ children }: any) {
@@ -41,6 +67,14 @@ function useContextProvided() {
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
   useEffect(() => {
+    AsyncStorage.getItem("userCred").then((val) => {
+      if (val) {
+        const userCred = JSON.parse(val);
+        signIn(userCred.username, userCred.password);
+      }
+    });
+  }, []);
+  useEffect(() => {
     registerForPushNotificationsAsync().then((token) => console.log(token));
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
@@ -60,17 +94,74 @@ function useContextProvided() {
     };
   }, []);
   const [user, setUser] = useState<User | null>();
-  const signUp = () => {
+
+  const signUp = async (obj: any) => {
+    const req = await axios.post(baseUrl + "admin/auth/register", {
+      username: user?.username,
+      password: user?.password,
+      email: obj.email,
+      name: obj.fname + " " + obj.lname,
+      phone_number: obj.phone,
+      profile_img: obj.imgLink,
+      sign_img: obj.singLink,
+      aadhar_img: obj.adLink,
+      demat_pdf_url: obj.demLink,
+      address_line_1: obj.addrLine1,
+      address_line_2: obj.addrline2,
+      city: obj.city,
+      state: obj.state,
+      pincode: obj.pinCode,
+      profession: obj.profession,
+      experience: obj.experience,
+      income: obj.income,
+      dob: obj.dob,
+      isAuth: false,
+    });
+    // AsyncStorage.setItem("kycSubmit", "true");
+    return req.data.status;
+  };
+  const signIn = (uname: string, pass: string) => {
+    axios
+      .post(baseUrl + "admin/auth/login", {
+        username: uname,
+        password: pass,
+      })
+      .then((val) => {
+        if (val.data.status === "SUCCESS") {
+          AsyncStorage.setItem(
+            "userCred",
+            JSON.stringify({
+              username: uname,
+              password: pass,
+            })
+          );
+          console.log(val.data.data);
+          setUser(val.data.data)
+          // setUser({
+          //   email: val.data.data.email,
+          //   name: val.data.data.name ? val.data.data.name : "barfi",
+          //   mobileNumber: val.data.data.mobileNo,
+          //   city: val.data.data.city,
+          //   address: val.data.data.address,
+          //   number: val.data.data.number,
+          //   username: val.data.data.username,
+          // });
+        }
+      });
+  };
+  const putIdPass = (id: string, pass: string) => {
+    //@ts-ignore
     setUser({
-      id: "asdasd",
-      name: "aditya",
-      email: "aditya@gmail.com",
-      password: "adi",
-      isVerified: false,
+      username: id,
+      password: pass,
+      isAuth: 'undefined',
     });
   };
   return {
-    user,signUp
+    user,
+    signUp,
+    putIdPass,
+    signIn
   };
 }
 async function registerForPushNotificationsAsync() {

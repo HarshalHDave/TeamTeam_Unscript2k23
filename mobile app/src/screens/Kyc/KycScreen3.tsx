@@ -198,7 +198,7 @@ const KycScreen3 = ({ navigation, route }: any) => {
                         if (change.type === "set") {
                         //   console.log(date?.toISOString());
                           //@ts-ignore
-                            handleChange("dob")(date?.toLocaleDateString());
+                            handleChange("dob")(date?.toISOString());
                         }
                         setShowDatePicker(false);
                       }}

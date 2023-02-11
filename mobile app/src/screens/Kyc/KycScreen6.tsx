@@ -11,8 +11,10 @@ import SafeArea from "../../components/SafeArea";
 import Navbar from "../../components/Navbar";
 import { Formik } from "formik";
 import { useAppContext } from "../../lib/Context";
+import CustButton from "../../components/CustButton";
 
-const KycScreen6 = ({ navigation }: any) => {
+const KycScreen6 = ({ navigation , route}: any) => {
+  console.log(route.params)
   const auth = useAppContext();
   return (
     <SafeArea>
@@ -21,10 +23,11 @@ const KycScreen6 = ({ navigation }: any) => {
           initialValues={{
             profession: "",
             experience: "",
-            cpass: "",
+            income: "",
           }}
           onSubmit={(values) => {
-            if (values.cpass === values.experience) auth?.signUp();
+            // console.log({...values,...route.params})
+            auth?.signUp({...values,...route.params});
             // auth?.signIn(values.profession, values.experience);
           }}
         >
@@ -62,41 +65,66 @@ const KycScreen6 = ({ navigation }: any) => {
               >
                 Your Experience :
               </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  marginVertical: 20,
+                }}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.expButton,
+                    values.experience == "2" && { backgroundColor: "pink" },
+                  ]}
+                  onPress={() => handleChange("experience")("2")}
+                >
+                  <Text style={{ color: "white" }}>0 - 2 Years</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.expButton,
+                    values.experience == "3" && { backgroundColor: "pink" },
+                  ]}
+                  onPress={() => handleChange("experience")("3")}
+                >
+                  <Text style={{ color: "white" }}>3 - 5 Years</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.expButton,
+                    values.experience == "5" && { backgroundColor: "pink" },
+                  ]}
+                  onPress={() => handleChange("experience")("5")}
+                >
+                  <Text style={{ color: "white" }}>5 - 9 Years</Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "white",
+                  marginBottom: 5,
+                }}
+              >
+                Your Income :
+              </Text>
               <View style={[styles.container]}>
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Confirm experienceword"}
-                    value={values.cpass}
+                    placeholder={"Your Income"}
+                    value={values.income}
+                    keyboardType="numeric"
                     autoCapitalize="none"
-                    onChangeText={handleChange("cpass")}
+                    onChangeText={handleChange("income")}
                     placeholderTextColor={"grey"}
                   />
                 </View>
               </View>
-              <Text
-                style={{
-                  color: "white",
-                  textAlign: "center",
-                  marginBottom: 25,
-                  fontSize: 20,
-                }}
-              >
-                Already have an Account ?
-                <Text
-                  style={{ color: "cyan" }}
-                  onPress={() => {
-                    navigation.navigate("Login");
-                  }}
-                >
-                  {"  "}Log In
-                </Text>
-              </Text>
-              <View style={[styles.container]}>
-                {/* <View style={[styles.searchBar]}> */}
-                <Button title="Submit" onPress={() => handleSubmit()} />
-                {/* </View> */}
-              </View>
+              <CustButton text="Submit" onButtonPress={handleSubmit} container_style={{alignSelf:'center'}} />
             </View>
           )}
         </Formik>
@@ -125,6 +153,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
   },
+  expButton: {
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    borderWidth: 0.6,
+    borderColor: "#aea0ae",
+    borderRadius: 8,
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+
   input: {
     fontSize: 14,
     marginLeft: 8,

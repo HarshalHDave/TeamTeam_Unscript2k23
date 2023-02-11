@@ -37,9 +37,10 @@ const Navbar = ({ title, iconComponent, home, backButton }: navBar) => {
       <Text
         style={{
           fontWeight: "400",
-          fontSize: 24,
+          fontSize: 22,
           color: "#dedede",
           letterSpacing: 0.8,
+          fontFamily: 'mm',
         }}
       >
         {title}

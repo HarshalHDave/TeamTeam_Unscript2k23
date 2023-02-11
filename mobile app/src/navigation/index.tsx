@@ -4,19 +4,31 @@ import UserStack from "./UserStack";
 import { useAppContext } from "../lib/Context";
 import AuthStack from "./AuthStack";
 import KycStack from "./KycStack";
+import Waiting from "../screens/Waiting";
 
 const index = () => {
   const auth = useAppContext();
-  return(
-    <UserStack />
-  )
-  // return auth?.user ? (
-  //   <>
-  //   {auth.user.isVerified ? <UserStack /> : <KycStack />}
-  //   </>
-  // ) : (
-  //   <AuthStack />
-  // );
+  // console.log(auth.user.isAuth);
+  return auth?.user ? (
+    <>
+      {auth.user.isAuth == undefined && <AuthStack></AuthStack>}
+      {auth.user.isAuth == true && <UserStack />}
+      {auth.user.isAuth == false && <Waiting />}
+      {/* @ts-ignore */}
+      {auth.user.isAuth == 'undefined' && <KycStack />}
+      {/* {auth.user.isAuth != undefined ? (
+        auth.user.isAuth == true ? (
+          <UserStack />
+        ) : (
+          <Waiting />
+        )
+      ) : (
+        <AuthStack></AuthStack>
+      )} */}
+    </>
+  ) : (
+    <AuthStack />
+  );
 };
 
 export default index;

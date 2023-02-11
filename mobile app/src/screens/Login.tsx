@@ -12,7 +12,7 @@ import Navbar from "../components/Navbar";
 import { Formik } from "formik";
 import { useAppContext } from "../lib/Context";
 
-const Login = ({navigation}:any) => {
+const Login = ({ navigation }: any) => {
   const auth = useAppContext();
   return (
     <SafeArea>
@@ -24,7 +24,7 @@ const Login = ({navigation}:any) => {
             pass: "",
           }}
           onSubmit={(values) => {
-            // auth?.signIn(values.id, values.pass);
+            auth?.signIn(values.id, values.pass);
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -56,15 +56,20 @@ const Login = ({navigation}:any) => {
                   color: "white",
                   textAlign: "center",
                   marginBottom: 25,
-                  fontSize: 20,
+                  fontSize: 14,
+                  fontFamily: 'm'
                 }}
               >
                 Dont Have and Account ?
-              <Text style={{color:'cyan'}} onPress={()=>{navigation.navigate('Signup')}}>{'  '}Sign Up</Text>
+                <Text style={{ color: 'cyan' }} onPress={() => { navigation.navigate('Signup') }}>{'  '}Sign Up</Text>
               </Text>
               <View style={[styles.container]}>
                 {/* <View style={[styles.searchBar]}> */}
-                <Button title="Submit" onPress={() => handleSubmit()} />
+                <TouchableOpacity
+                  onPress={() => handleSubmit()}
+                  style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100 }}>
+                  <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Login</Text>
+                </TouchableOpacity>
                 {/* </View> */}
               </View>
             </View>
@@ -89,16 +94,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     flexDirection: "row",
     width: "99%",
-    borderWidth: 0.6,
+    borderWidth: 1,
     borderColor: "#aea0ae",
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: "center",
     paddingVertical: 8,
   },
   input: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 8,
     width: "100%",
     color: "grey",
+    fontFamily: 'm'
   },
 });
