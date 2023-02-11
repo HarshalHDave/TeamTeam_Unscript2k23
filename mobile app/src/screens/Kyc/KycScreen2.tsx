@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useRef, useState } from "react";
-import SafeArea from "../components/SafeArea";
+import SafeArea from "../../components/SafeArea";
 //@ts-ignore
 import OTPTextInput from "react-native-otp-textinput";
-import CustButton from "../components/CustButton";
+import CustButton from "../../components/CustButton";
 const KycScreen2 = ({ navigation, route }: any) => {
   const [Otp, setOtp] = useState("");
   console.log(route.params);

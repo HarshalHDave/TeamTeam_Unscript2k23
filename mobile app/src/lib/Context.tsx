@@ -11,6 +11,7 @@ import * as Device from "expo-device";
 
 interface AuthCon {
   user: User;
+  signUp :()=>void
 }
 interface User {
   id: string;
@@ -58,15 +59,18 @@ function useContextProvided() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-  const [user, setUser] = useState<User | null>({
-    id: "asdasd",
-    name: "aditya",
-    email: "aditya@gmail.com",
-    password: "adi",
-    isVerified: false,
-  });
+  const [user, setUser] = useState<User | null>();
+  const signUp = () => {
+    setUser({
+      id: "asdasd",
+      name: "aditya",
+      email: "aditya@gmail.com",
+      password: "adi",
+      isVerified: false,
+    });
+  };
   return {
-    user,
+    user,signUp
   };
 }
 async function registerForPushNotificationsAsync() {

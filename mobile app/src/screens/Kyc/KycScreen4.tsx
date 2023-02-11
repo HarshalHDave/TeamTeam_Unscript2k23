@@ -1,9 +1,9 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
-import SafeArea from "../components/SafeArea";
+import SafeArea from "../../components/SafeArea";
 import { Formik } from "formik";
-import CustButton from "../components/CustButton";
-import navigation from "../navigation";
+import CustButton from "../../components/CustButton";
+import navigation from "../../navigation";
 
 const KycScreen4 = ({ navigation, route }: any) => {
   console.log(route.params);

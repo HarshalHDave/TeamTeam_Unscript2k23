@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
-import SafeArea from "../components/SafeArea";
-import Navbar from "../components/Navbar";
+import SafeArea from "../../components/SafeArea";
+import Navbar from "../../components/Navbar";
 import { Formik } from "formik";
-import CustButton from "../components/CustButton";
+import CustButton from "../../components/CustButton";
 import * as yup from "yup";
 
 const KycScreen1 = ({navigation}:any) => {

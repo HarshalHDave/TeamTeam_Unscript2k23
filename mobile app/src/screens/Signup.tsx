@@ -12,18 +12,20 @@ import Navbar from "../components/Navbar";
 import { Formik } from "formik";
 import { useAppContext } from "../lib/Context";
 
-const Login = ({navigation}:any) => {
+const Signup = ({ navigation }: any) => {
   const auth = useAppContext();
   return (
     <SafeArea>
       <>
-        <Navbar title="Login Page" />
+        <Navbar title="Sign Up Page" />
         <Formik
           initialValues={{
             id: "",
             pass: "",
+            cpass: "",
           }}
           onSubmit={(values) => {
+            if (values.cpass === values.pass) auth?.signUp();
             // auth?.signIn(values.id, values.pass);
           }}
         >
@@ -33,8 +35,9 @@ const Login = ({navigation}:any) => {
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Your ID"}
+                    placeholder={"Create ID"}
                     value={values.id}
+                    autoCapitalize="none"
                     onChangeText={handleChange("id")}
                     placeholderTextColor={"grey"}
                   />
@@ -44,9 +47,23 @@ const Login = ({navigation}:any) => {
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Your Password"}
+                    placeholder={"Enter Password"}
                     value={values.pass}
+                    secureTextEntry
+                    autoCapitalize="none"
                     onChangeText={handleChange("pass")}
+                    placeholderTextColor={"grey"}
+                  />
+                </View>
+              </View>
+              <View style={[styles.container]}>
+                <View style={[styles.searchBar]}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder={"Confirm Password"}
+                    value={values.cpass}
+                    autoCapitalize="none"
+                    onChangeText={handleChange("cpass")}
                     placeholderTextColor={"grey"}
                   />
                 </View>
@@ -59,8 +76,15 @@ const Login = ({navigation}:any) => {
                   fontSize: 20,
                 }}
               >
-                Dont Have and Account ?
-              <Text style={{color:'cyan'}} onPress={()=>{navigation.navigate('Signup')}}>{'  '}Sign Up</Text>
+                Already have an Account ?
+                <Text
+                  style={{ color: "cyan" }}
+                  onPress={() => {
+                    navigation.navigate("Login");
+                  }}
+                >
+                  {"  "}Log In
+                </Text>
               </Text>
               <View style={[styles.container]}>
                 {/* <View style={[styles.searchBar]}> */}
@@ -75,7 +99,7 @@ const Login = ({navigation}:any) => {
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   container: {

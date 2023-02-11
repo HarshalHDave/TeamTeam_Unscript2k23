@@ -7,46 +7,69 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import SafeArea from "../components/SafeArea";
-import Navbar from "../components/Navbar";
+import SafeArea from "../../components/SafeArea";
+import Navbar from "../../components/Navbar";
 import { Formik } from "formik";
-import { useAppContext } from "../lib/Context";
+import { useAppContext } from "../../lib/Context";
 
-const Login = ({navigation}:any) => {
+const KycScreen6 = ({ navigation }: any) => {
   const auth = useAppContext();
   return (
     <SafeArea>
       <>
-        <Navbar title="Login Page" />
         <Formik
           initialValues={{
-            id: "",
-            pass: "",
+            profession: "",
+            experience: "",
+            cpass: "",
           }}
           onSubmit={(values) => {
-            // auth?.signIn(values.id, values.pass);
+            if (values.cpass === values.experience) auth?.signUp();
+            // auth?.signIn(values.profession, values.experience);
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View style={{ marginTop: 35 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "white",
+                  marginBottom: 5,
+                }}
+              >
+                Your Profession :
+              </Text>
               <View style={[styles.container]}>
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Your ID"}
-                    value={values.id}
-                    onChangeText={handleChange("id")}
+                    placeholder={"Enter Your Profession"}
+                    value={values.profession}
+                    autoCapitalize="none"
+                    onChangeText={handleChange("profession")}
                     placeholderTextColor={"grey"}
                   />
                 </View>
               </View>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "white",
+                  marginBottom: 5,
+                }}
+              >
+                Your Experience :
+              </Text>
               <View style={[styles.container]}>
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Your Password"}
-                    value={values.pass}
-                    onChangeText={handleChange("pass")}
+                    placeholder={"Confirm experienceword"}
+                    value={values.cpass}
+                    autoCapitalize="none"
+                    onChangeText={handleChange("cpass")}
                     placeholderTextColor={"grey"}
                   />
                 </View>
@@ -59,8 +82,15 @@ const Login = ({navigation}:any) => {
                   fontSize: 20,
                 }}
               >
-                Dont Have and Account ?
-              <Text style={{color:'cyan'}} onPress={()=>{navigation.navigate('Signup')}}>{'  '}Sign Up</Text>
+                Already have an Account ?
+                <Text
+                  style={{ color: "cyan" }}
+                  onPress={() => {
+                    navigation.navigate("Login");
+                  }}
+                >
+                  {"  "}Log In
+                </Text>
               </Text>
               <View style={[styles.container]}>
                 {/* <View style={[styles.searchBar]}> */}
@@ -75,7 +105,7 @@ const Login = ({navigation}:any) => {
   );
 };
 
-export default Login;
+export default KycScreen6;
 
 const styles = StyleSheet.create({
   container: {

@@ -3,13 +3,14 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import HomeStack from "./nested/HomeStack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const UserStack = () => {
-  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="HomeStack" component={HomeStack} />
-    </Tab.Navigator>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="HomeStack" component={HomeStack} />
+    </Stack.Navigator>
   );
 };
 

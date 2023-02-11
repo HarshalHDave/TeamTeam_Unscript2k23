@@ -7,13 +7,16 @@ import KycStack from "./KycStack";
 
 const index = () => {
   const auth = useAppContext();
-  return auth?.user ? (
-    <>
-    {auth.user.isVerified ? <UserStack /> : <KycStack />}
-    </>
-  ) : (
-    <AuthStack />
-  );
+  return(
+    <UserStack />
+  )
+  // return auth?.user ? (
+  //   <>
+  //   {auth.user.isVerified ? <UserStack /> : <KycStack />}
+  //   </>
+  // ) : (
+  //   <AuthStack />
+  // );
 };
 
 export default index;

@@ -7,7 +7,11 @@ import { useFonts } from "expo-font";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    "Montserrat-Black": require("./assets/fonts/Montserrat-Black.ttf"),
+    "mblack": require("./assets/fonts/Montserrat-Black.ttf"),
+    "mb": require("./assets/fonts/Montserrat-Bold.ttf"),
+    "msb": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+    "m": require("./assets/fonts/Montserrat-Regular.ttf"),
+    "mm": require("./assets/fonts/Montserrat-Medium.ttf"),
   });
   if (!fontsLoaded) {
     return null;

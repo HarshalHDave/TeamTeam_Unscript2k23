@@ -14,7 +14,7 @@ export default SafeArea;
 const styles = StyleSheet.create({
   background_main: {
     flex: 1,
-    backgroundColor: "#181A20",
+    backgroundColor: "#121213",
     paddingBottom: 8,
     paddingHorizontal: 10,
   },

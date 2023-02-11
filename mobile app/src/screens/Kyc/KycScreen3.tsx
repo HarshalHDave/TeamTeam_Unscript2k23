@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import SafeArea from "../components/SafeArea";
+import SafeArea from "../../components/SafeArea";
 import { Formik } from "formik";
-import CustButton from "../components/CustButton";
+import CustButton from "../../components/CustButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const KycScreen3 = ({ navigation, route }: any) => {

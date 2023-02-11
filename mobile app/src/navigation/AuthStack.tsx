@@ -3,13 +3,16 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Signup from "../screens/Signup";
 
 const AuthStack = () => {
-  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={Login} />
-    </Tab.Navigator>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
   );
 };
 

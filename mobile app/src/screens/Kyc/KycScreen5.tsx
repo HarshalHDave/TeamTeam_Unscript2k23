@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { useRef, useState } from "react";
-import SafeArea from "../components/SafeArea";
+import SafeArea from "../../components/SafeArea";
 import SignatureScreen from "react-native-signature-canvas";
-import CustButton from "../components/CustButton";
+import CustButton from "../../components/CustButton";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -13,7 +13,7 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
-import { storage } from "../lib/Firebase";
+import { storage } from "../../lib/Firebase";
 const KycScreen5 = ({ navigation, route }: any) => {
   const signRef = useRef();
   const [signature, setSignature] = useState("");
@@ -123,14 +123,14 @@ const KycScreen5 = ({ navigation, route }: any) => {
       setImage(result.assets[0].uri);
     }
   };
-  console.log(route.params);
 
   const uploadAll = async () => {
-    uploadUriFirebase(aadharFile);
-    uploadUriFirebase(dematFile);
+    const adLink = await uploadUriFirebase(aadharFile);
+    const demLink = await uploadUriFirebase(dematFile);
     //@ts-ignore
-    uploadUriFirebase(image);
-    uploadUriFirebase(signFile);
+    const imgLink = await uploadUriFirebase(image);
+    const singLink = await uploadUriFirebase(signFile);
+    console.log({adLink,demLink,imgLink,singLink,...route.params})
     // console.log(image, aadharFile, dematFile, signature);
   };
 
