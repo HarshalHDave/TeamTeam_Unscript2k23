@@ -29,19 +29,19 @@ export default function DashboardAppPage() {
   const steps = [
     {
       id: '1',
-      message: 'Hello, Welcome Mr. Modiji',
+      message: 'Hello, Welcome Team Team',
       trigger: '2',
     },
     {
       id: '2',
       options: [
-        { value: 1, label: 'What is space management', trigger: '4' },
-        { value: 2, label: 'How to import or export a product.', trigger: '3' },
+        { value: 1, label: 'What is Bonds Credits score?', trigger: '4' },
+        { value: 2, label: 'How to buy or sell a bond.', trigger: '3' },
       ],
     },
     {
       id: '3',
-      message: 'You can use our app for creating transactions, altering inventory, generat tokens and many other features !!!',
+      message: 'You can use our app for creating transactions, altering bonds, generating tokens and many other features !!!',
       trigger: '2',
     },
     {
@@ -64,19 +64,19 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Number of users" total={714000} icon={'material-symbols:warehouse-outline'} />
+            <AppWidgetSummary title="Number of users" total={714000} icon={'ic:outline-people'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Bonds" total={1352831} color="info" icon={'ion:wallet-outline'} />
+            <AppWidgetSummary title="Total Bonds" total={1352831} color="info" icon={'mdi:paper-check-outline'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Todays Transaction Value" total={1723315} color="warning" icon={'mdi:home-import-outline'} />
+            <AppWidgetSummary title="Todays Transaction Value" total={1723315} color="warning" icon={'ph:currency-dollar-bold' } />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Rejected Users" total={234} color="error" icon={'mdi:home-export-outline'} />
+            <AppWidgetSummary title="Rejected Users" total={234} color="error" icon={'mdi:user-block-outline'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -220,7 +220,13 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          <ChatBot steps={steps} floating={true} recognitionEnable={true} />
+          <ChatBot 
+            steps={steps} 
+            floating={true} 
+            recognitionEnable={true}
+            speechSynthesis={{ enable: true, lang: 'en' }}
+
+          />
         
         </Grid>
       </Container>

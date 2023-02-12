@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -31,21 +32,24 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import { getUserAccidentList } from '../_mock/user';
 
+// import json
+// eslint-disable-next-line import/extensions
+import nseData from '../data/nseBonds.json';
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  {id: 'name', label: 'Name', alignRight: false},
-  {id: 'value', label: 'Value', alignRight: false},
-  {id: 'status', label: 'Status', alignRight: false},
-  {id: 'expiryDate', label: 'Expiry Date', alignRight: false},
-  {id: 'importDate', label: 'Import Date', alignRight: false},
-  // { id: 'text', label: 'Description', alignRight: false },
-  // { id: 'pocnum', label: 'POC Number', alignRight: false },
-  // { id: 'pocname', label: 'POC Name', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
-  // { id: '', label: 'See Map' },
-  // { id: '', label: 'More' },
+  // {id: 'id', label: 'ID', alignRight: false },
+  { id: 'symbol', label: 'Symbol', alignRight: false },
+  { id: 'coupr', label: 'Coupon', alignRight: false },
+  { id: 'credit_rating', label: 'Credit Rating', alignRight: false },
+  { id: 'maturity_date', label: 'Maturity Date', alignRight: false },
+  { id: 'face_value', label: 'Face Value', alignRight: false },
+  { id: 'bYield', label: 'bYield', alignRight: false },
+  { id: 'isin', label: 'isin', alignRight: false },
+  // { id: 'mstrQty', label: 'mstrQty', alignRight: false },
+  // {id: 'blob', label: 'label', alignRight: false},
+
 ];
 
 // ----------------------------------------------------------------------
@@ -91,11 +95,16 @@ const handleMapCLick = (lat, lng) => {
 };
 
 export default function AccidentPage() {
-  useEffect(() => {
-    getUserAccidentList().then((val) => {
-      setUserList(val);
-    });
-  }, []);
+  const users = [];
+
+  console.log(nseData.data);
+  // users.push(nseData);
+  console.log(users);
+  // users.push(nseData);
+
+  // setUserList(nseData.data);
+
+
 
   const updateOrDelete = async (type) => {
     if (type === 'resolve') {
@@ -104,7 +113,7 @@ export default function AccidentPage() {
         headers: {
           accept: 'application/json',
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwicGhvbmUiOiJpN2NkeTA4MWptIiwiaWF0IjoxNjY4NzYyMTYyLCJleHAiOjE2NjkzNjIxNjJ9.WT2mz04A4vxYErseXzWdihHkz0avT-D8_8DZpJLXN20',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZGl0eWEucGFpQGdtYWlsLmNvbSIsImlhdCI6MTY3NjExNTAwOCwiZXhwIjoxNzA3NjcyNjA4fQ._HLJq29WfVOvCTPE88RrZ0I4nD7TbZwJbm4c-_Wd1AM',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -121,6 +130,9 @@ export default function AccidentPage() {
       console.log(currId);
     }
   };
+
+
+
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -135,6 +147,7 @@ export default function AccidentPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [userList, setUserList] = useState([]);
+
   const [currId, setcurrId] = useState();
   const handleOpenMenu = (event, id) => {
     setcurrId(id);
@@ -187,6 +200,7 @@ export default function AccidentPage() {
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
+    console.log(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
@@ -195,16 +209,20 @@ export default function AccidentPage() {
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
+  useEffect(() => {
+    setUserList(nseData.data);
+  }, []);
+
   return (
     <>
       <Helmet>
-        <title> My Transactions </title>
+        <title> My Bonds </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            My Transactions
+            My Bonds
           </Typography>
           {/* <Button
             onClick={() => window.open('https://adityapai18.github.io/unl_project/report_page/', '_blank')}
@@ -216,7 +234,7 @@ export default function AccidentPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          {/* <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} /> */}
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -231,27 +249,21 @@ export default function AccidentPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name , value , status , expiryDate , importDate} = row;
+                    // eslint-disable-next-line camelcase
+                    const { id, symbol, series, coupr, credit_rating, maturity_date, face_value, isin, bYield, } = row;
                     // const selectedUser = selected.indexOf(text) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, text)} /> */}
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          {id}
-                        </TableCell>
-
-                        <TableCell align="left">{name}</TableCell>
-
-                        <TableCell align="left">{value}</TableCell>
-
-                        <TableCell align="left">{status}</TableCell>
-
-                        <TableCell align="left">{expiryDate}</TableCell>
-                        <TableCell align="left">{importDate}</TableCell>
+                        {/* {/id*  */}
+                        <TableCell align='left'>{id}</TableCell>
+                        <TableCell align="left">{symbol + series}</TableCell>
+                        <TableCell align="left">{coupr}</TableCell>
+                        <TableCell align="left">{credit_rating}</TableCell>
+                        <TableCell align="left">{maturity_date}</TableCell>
+                        <TableCell align="left">{face_value}</TableCell>
+                        <TableCell align="left">{bYield}</TableCell>
+                        <TableCell align="left">{isin}</TableCell>
                       </TableRow>
                     );
                   })}

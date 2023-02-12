@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable camelcase */
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -32,7 +34,7 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import { getUserList } from '../_mock/user';
+import { getActiveUserList } from '../_mock/user';
 
 // mui icons
 
@@ -41,12 +43,14 @@ import { getUserList } from '../_mock/user';
 const TABLE_HEAD = [
     { id: 'id', label: 'ID', alignRight: false },
     { id: 'name', label: 'Name', alignRight: false },
-    { id: 'value', label: 'Value', alignRight: false },
-    // {id: },
-    // { id: 'text', label: 'Description', alignRight: false },
-    { id: 'expiryDate', label: 'Expiry Date', alignRight: false },
-    { id: 'importDate', label: 'Import Date', alignRight: false },
-    { id: 'actions', label: 'Actions', alignRight: false }
+    { id: 'email', label: 'Email', alignRight: false },
+    { id: 'phone_number', label: 'Phone Number', alignRight: false },
+    { id: 'profile_img', label: 'Profile Image', alignRight: false },
+    { id: 'sign_img', label: 'Sign Image', alignRight: false },
+    { id: 'aadhar_img', label: 'Aadhar Image', alignRight: false },
+    { id: 'address', label: 'Address', alignRight: false },
+    { id: 'dob', label: 'DOB', alignRight: false },
+    { id: 'isAuth', label: 'isAuth', alignRight: false },
 
 ];
 
@@ -84,7 +88,7 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
     useEffect(() => {
-        getUserList().then((val) => {
+        getActiveUserList().then((val) => {
             setUserList(val);
         });
     }, []);
@@ -121,33 +125,39 @@ export default function UserPage() {
         setOrderBy(property);
     };
 
-    const updateOrDelete = async (type) => {
+    const updateOrDelete = async (type, id) => {
+        
         if (type === 'resolve') {
-            const apiRes = await fetch(`http://localhost:5000/admin/reports/update/${currId}`, {
+            const apiRes = await fetch(`http://192.168.137.173:5000/admin/user/partial-update/${id}`, {
                 method: 'PUT',
                 headers: {
                     accept: 'application/json',
                     Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwicGhvbmUiOiJpN2NkeTA4MWptIiwiaWF0IjoxNjY4NzYyMTYyLCJleHAiOjE2NjkzNjIxNjJ9.WT2mz04A4vxYErseXzWdihHkz0avT-D8_8DZpJLXN20',
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZGl0eWEucGFpQGdtYWlsLmNvbSIsImlhdCI6MTY3NjExNTAwOCwiZXhwIjoxNzA3NjcyNjA4fQ._HLJq29WfVOvCTPE88RrZ0I4nD7TbZwJbm4c-_Wd1AM',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    isActive: false,
+                    isActive: true,
+                    isDeleted: false,
+                    isAuth: true
                 }),
             });
             const response = await apiRes.json();
+            console.log(response);
             if (response.status === 'SUCCESS') {
-                getUserList().then((val) => {
+                console.log('success');
+                getActiveUserList().then((val) => {
                     setUserList(val);
                 });
+                console.log("The updated user is: ")
+                console.log(userList);
+            } else {
+                console.log('error');
             }
         } else {
-            console.log(currId);
+            console.log(id);
         }
     };
-
-    // fetching the api from swagger to populate the table [product list]
-
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -176,22 +186,26 @@ export default function UserPage() {
         window.open(url, '_blank');
     };
 
+
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
     const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
 
     const isNotFound = !filteredUsers.length && !!filterName;
+    // useEffect(() => {
+    //     setcurrId(filteredUsers.map((user) => user.id));
+    // }, [])
 
     return (
         <>
             <Helmet>
-                <title> Users </title>
+                <title> Active Users </title>
             </Helmet>
 
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Users
+                        Active Users
                     </Typography>
                     {/* <Button
             onClick={() => window.open('https://adityapai18.github.io/unl_project/report_page/', '_blank')}
@@ -218,9 +232,9 @@ export default function UserPage() {
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, value, expiryDate, importDate, } = row;
+                                        const { id, name, email, phone_number, profile_img, sign_img, aadhar_img, address_line_1, address_line_2, town, city, state, dob, isAuth } = row;
                                         // const selectedUser = selected.indexOf(text) !== -1;
-
+                                        console.log(id)
                                         return (
                                             <TableRow hover key={id} tabIndex={-1} role="checkbox" >
                                                 <TableCell padding="checkbox">
@@ -230,30 +244,27 @@ export default function UserPage() {
                                                 <TableCell component="th" scope="row" padding="none">
                                                     <Stack direction="row" alignItems="center" spacing={2}>
                                                         {/* <Avatar alt={text} src={avatarUrl} /> */}
-                                                        <Typography variant="subtitle2" noWrap>
-                                                            {id}
-                                                        </Typography>
+
                                                     </Stack>
                                                 </TableCell>
 
-                                                <TableCell align="left">{name}</TableCell>
-                                                <TableCell align="left">{value}</TableCell>
-                                                <TableCell align="left">{expiryDate}</TableCell>
-                                                <TableCell align="left">{importDate}</TableCell>
+                                                {
+                                                    !isAuth ? <></> : <>
+                                                        <TableCell align="left">{name}</TableCell>
+                                                        <TableCell align="left">{email}</TableCell>
+                                                        <TableCell align="left">{phone_number}</TableCell>
+                                                        <TableCell align="left"> <a target="_blank" rel="noreferrer" href={profile_img} alt="profile">profile img </a></TableCell>
+                                                        <TableCell align="left"> <a target="_blank" rel="noreferrer" href={sign_img} alt="sign"> sign img</a></TableCell>
+                                                        <TableCell align="left"> <a target="_blank" rel="noreferrer" href={aadhar_img} alt="aadhar"> aadhar pdf</a></TableCell>
+                                                        <TableCell align="left">{address_line_1 + " " + address_line_2 + " " + town + " " + city + " " + state}</TableCell>
+                                                        <TableCell align="left">{dob}</TableCell>
+                                                        <TableCell align="left">{isAuth ? 'Authorized' : <></>}
+                                                        </TableCell>
+                                                    
+                                                    </>
+                                                }
 
-                                                <TableCell align="left">
-                                                    <Stack spacing={2} direction={row}>
-                                                        <IconButton component="label">
-                                                            <ReportIcon />
-                                                        </IconButton>
-                                                        <IconButton component="label">
-                                                            <RemoveCircleIcon />
-                                                        </IconButton>
-                                                        <IconButton component="label">
-                                                            <IosShareIcon />
-                                                        </IconButton>
-                                                    </Stack>
-                                                </TableCell>
+
                                             </TableRow>
                                         );
                                     })}
@@ -303,7 +314,7 @@ export default function UserPage() {
                 </Card>
             </Container>
 
-            <Popover
+            {/* <Popover
                 open={Boolean(open)}
                 anchorEl={open}
                 onClose={handleCloseMenu}
@@ -330,7 +341,7 @@ export default function UserPage() {
                     <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                     Delete
                 </MenuItem>
-            </Popover>
+            </Popover> */}
         </>
     );
 }

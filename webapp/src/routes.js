@@ -13,6 +13,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import TransactionsPage from './pages/TransactionsPage';
 
 // ----------------------------------------------------------------------
 
@@ -24,10 +25,10 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'applicants', element: <ApplciantPage /> },
+        { path: 'bonds', element: <AccidentPage /> },
         { path: 'users', element: <UserPage /> },
-        { path: 'bonds', element: <BondPage /> },
-        { path: 'my-transactions', element: <AccidentPage /> },
+        { path: 'applicants', element: <ApplciantPage /> },
+        { path: 'my-transactions', element: <TransactionsPage /> },
         { path: 'my-spaces', element: <TenderPage /> },
         // { path: 'products', element: <ProductsPage /> },
         // { path: 'blog', element: <BlogPage /> },

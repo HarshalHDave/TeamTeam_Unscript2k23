@@ -1,7 +1,12 @@
+/* eslint-disable import/order */
+/* eslint-disable import/newline-after-import */
+/* eslint-disable import/first */
+/* eslint-disable camelcase */
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+
 // @mui
 import {
     Card,
@@ -21,32 +26,32 @@ import {
     IconButton,
     TableContainer,
     TablePagination,
+    Chip
 } from '@mui/material';
 // components
-import ReportIcon from '@mui/icons-material/Report';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import IosShareIcon from '@mui/icons-material/IosShare';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import { getActiveUserList } from '../_mock/user';
 
-// mui icons
+// import json
+// eslint-disable-next-line import/extensions
+import nseData from '../data/nseBonds.json';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
     { id: 'id', label: 'ID', alignRight: false },
-    { id: 'name', label: 'Name', alignRight: false },
-    { id: 'value', label: 'Value', alignRight: false },
-    // {id: },
-    // { id: 'text', label: 'Description', alignRight: false },
-    { id: 'expiryDate', label: 'Expiry Date', alignRight: false },
-    { id: 'importDate', label: 'Import Date', alignRight: false },
-    { id: 'actions', label: 'Actions', alignRight: false }
+    { id: 'qty', label: 'Quantity', alignRight: false },
+    { id: 'blob', label: 'Blob', alignRight: false },
+    { id: 'isSell', label: 'Sell', alignRight: false },
+    { id: 'isOpen', label: 'Open', alignRight: false },
+    { id: 'strike_price', label: 'Strike Price', alignRight: false },
+    { id: 'isin', label: 'ISIN', alignRight: false },
+    { id: 'createdAt', label: 'Created At', alignRight: false },
+
 
 ];
 
@@ -76,28 +81,34 @@ function applySortFilter(array, comparator, query) {
         return a[1] - b[1];
     });
     if (query) {
-        // console.log(array);
         return filter(array, (_user) => _user.id.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
     return stabilizedThis.map((el) => el[0]);
 }
+const handleMapCLick = (lat, lng) => {
+    console.log(lat, lng);
+    let loc = lng;
+    loc += ',';
+    loc += lat;
+    let url = 'https://adityapai18.github.io/unl_project/landing_page/';
+    url += '?loc=';
+    url += window.btoa(loc);
+    console.log(url);
+    window.open(url, '_blank');
+};
 
-export default function BondPage() {
-    useEffect(() => {
-        getActiveUserList().then((val) => {
-            setUserList(val);
-        });
-    }, []);
-    useEffect(() => {
+export default function TransactionsPage() {
 
-    }, [])
+
+
+
     const [open, setOpen] = useState(null);
 
     const [page, setPage] = useState(0);
 
     const [order, setOrder] = useState('asc');
 
-    // const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState([]);
 
     const [orderBy, setOrderBy] = useState('text');
 
@@ -105,10 +116,11 @@ export default function BondPage() {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [userList, setUserList] = useState([]);
+
     const [currId, setcurrId] = useState();
     const handleOpenMenu = (event, id) => {
-        setOpen(event.currentTarget);
         setcurrId(id);
+        setOpen(event.currentTarget);
     };
 
     const handleCloseMenu = () => {
@@ -121,33 +133,29 @@ export default function BondPage() {
         setOrderBy(property);
     };
 
-    const updateOrDelete = async (type) => {
-        if (type === 'resolve') {
-            const apiRes = await fetch(`http://localhost:5000/admin/reports/update/${currId}`, {
-                method: 'PUT',
-                headers: {
-                    accept: 'application/json',
-                    Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwicGhvbmUiOiJpN2NkeTA4MWptIiwiaWF0IjoxNjY4NzYyMTYyLCJleHAiOjE2NjkzNjIxNjJ9.WT2mz04A4vxYErseXzWdihHkz0avT-D8_8DZpJLXN20',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    isActive: false,
-                }),
-            });
-            const response = await apiRes.json();
-            if (response.status === 'SUCCESS') {
-                getActiveUserList().then((val) => {
-                    setUserList(val);
-                });
-            }
-        } else {
-            console.log(currId);
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = userList.map((n) => n.text);
+            setSelected(newSelecteds);
+            return;
         }
+        setSelected([]);
     };
 
-    // fetching the api from swagger to populate the table [product list]
-
+    const handleClick = (event, text) => {
+        const selectedIndex = selected.indexOf(text);
+        let newSelected = [];
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, text);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+        }
+        setSelected(newSelected);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -164,42 +172,59 @@ export default function BondPage() {
         console.log(event.target.value);
     };
 
-    const handleMapCLick = (lat, lng) => {
-        console.log(lat, lng);
-        let loc = lng;
-        loc += ',';
-        loc += lat;
-        let url = 'https://adityapai18.github.io/unl_project/landing_page/';
-        url += '?loc=';
-        url += window.btoa(loc);
-        console.log(url);
-        window.open(url, '_blank');
-    };
-
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
     const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
 
     const isNotFound = !filteredUsers.length && !!filterName;
 
+    useEffect(() => {
+        const userTransactions = [];
+        const getUserTransactions = async () => {
+            const apiRes = await fetch('http://192.168.137.173:5000/admin/open_order/list', {
+                method: 'POST',
+                headers: {
+                    accept: 'application/json',
+                    Authorization:
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZGl0eWEucGFpQGdtYWlsLmNvbSIsImlhdCI6MTY3NjExNTAwOCwiZXhwIjoxNzA3NjcyNjA4fQ._HLJq29WfVOvCTPE88RrZ0I4nD7TbZwJbm4c-_Wd1AM',
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await apiRes.json();
+            console.log(result.data.data);
+            result.data.data.forEach((val) => {
+                userTransactions.push({
+                    id: val.id,
+                    qty: val.qty,
+                    blob: val.blob,
+                    isSell: val.isSell,
+                    isCancelled: val.isCancelled,
+                    isOpen: val.isOpen,
+                    strike_price: val.strike_price,
+                    isin: val.isin,
+                    createdAt: val.createdAt,
+                });
+            });
+            setUserList(userTransactions);
+            // users.push();
+        };
+
+        getUserTransactions()
+
+    }, []);
+
     return (
         <>
             <Helmet>
-                <title> Bonds </title>
+                <title> My Transactions </title>
             </Helmet>
 
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Bonds
+                        My Transactions
                     </Typography>
-                    {/* <Button
-            onClick={() => window.open('https://adityapai18.github.io/unl_project/report_page/', '_blank')}
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            Raise an Issue
-          </Button> */}
+
                 </Stack>
 
                 <Card>
@@ -213,47 +238,25 @@ export default function BondPage() {
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
                                     rowCount={userList.length}
-                                    // numSelected={selected.length}
+                                    numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, value, expiryDate, importDate, } = row;
-                                        // const selectedUser = selected.indexOf(text) !== -1;
+                                        // eslint-disable-next-line camelcase
+                                        const { id, qty, blob, isSell, isCancelled, isOpen, strike_price, isin, createdAt } = row;
 
                                         return (
                                             <TableRow hover key={id} tabIndex={-1} role="checkbox" >
-                                                <TableCell padding="checkbox">
-                                                    {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, text)} /> */}
-                                                </TableCell>
-
-                                                <TableCell component="th" scope="row" padding="none">
-                                                    <Stack direction="row" alignItems="center" spacing={2}>
-                                                        {/* <Avatar alt={text} src={avatarUrl} /> */}
-                                                        <Typography variant="subtitle2" noWrap>
-                                                            {id}
-                                                        </Typography>
-                                                    </Stack>
-                                                </TableCell>
-
-                                                <TableCell align="left">{name}</TableCell>
-                                                <TableCell align="left">{value}</TableCell>
-                                                <TableCell align="left">{expiryDate}</TableCell>
-                                                <TableCell align="left">{importDate}</TableCell>
-
-                                                <TableCell align="left">
-                                                    <Stack spacing={2} direction={row}>
-                                                        <IconButton component="label">
-                                                            <ReportIcon />
-                                                        </IconButton>
-                                                        <IconButton component="label">
-                                                            <RemoveCircleIcon />
-                                                        </IconButton>
-                                                        <IconButton component="label">
-                                                            <IosShareIcon />
-                                                        </IconButton>
-                                                    </Stack>
-                                                </TableCell>
+                                                <TableCell><></></TableCell>
+                                                <TableCell align='left'>{id}</TableCell>
+                                                <TableCell align="left">{qty}</TableCell>
+                                                <TableCell align="left">{blob}</TableCell>
+                                                <TableCell align="left">{isSell ? <Chip sx={{ color: 'success.main' }} variant="outlined" label="Sell" /> : <Chip sc={{ color: 'success.main' }} variant="outlined" label="Buy" />}</TableCell>
+                                                <TableCell align="left">{isOpen ? (isCancelled ? <Chip sx={{ color: 'error.main' }} variant="outlined" label="Order Cancelled" /> : <Chip sx={{ color: `#ed8911` }} variant="outlined" label="Order Pending" />) : (!isCancelled ? <Chip sx={{ color: 'success.main' }} label="Order Successful" /> : <></>)}</TableCell>
+                                                <TableCell align="left">{strike_price}</TableCell>
+                                                <TableCell align="left">{isin}</TableCell>
+                                                <TableCell align="left">{createdAt}</TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -303,34 +306,7 @@ export default function BondPage() {
                 </Card>
             </Container>
 
-            <Popover
-                open={Boolean(open)}
-                anchorEl={open}
-                onClose={handleCloseMenu}
-                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                PaperProps={{
-                    sx: {
-                        p: 1,
-                        width: 140,
-                        '& .MuiMenuItem-root': {
-                            px: 1,
-                            typography: 'body2',
-                            borderRadius: 0.75,
-                        },
-                    },
-                }}
-            >
-                <MenuItem sx={{ color: 'success.main' }} onClick={() => updateOrDelete('resolve')}>
-                    <Iconify icon={'material-symbols:done-rounded'} sx={{ mr: 2 }} />
-                    Resolved
-                </MenuItem>
 
-                <MenuItem sx={{ color: 'error.main' }} onClick={() => updateOrDelete('delete')}>
-                    <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-                    Delete
-                </MenuItem>
-            </Popover>
         </>
     );
 }
