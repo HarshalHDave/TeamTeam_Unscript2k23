@@ -13,6 +13,7 @@ import SafeArea from "../components/SafeArea";
 import nseJson from "../../assets/nseBonds.json";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppContext } from "../lib/Context";
 interface JData {
   symbol: "NHAI";
   series: "N6";
@@ -84,6 +85,7 @@ function getTopAndLast5(data: any, attribute: any) {
 }
 
 const Home = ({ navigation }: any) => {
+  const auth = useAppContext();
   const [DATA, setData] = useState<JData>();
   const [TodayBond, setTodayBond] = useState<JData>();
   const [Topgain, setTopgain] = useState<JData>();
@@ -228,6 +230,7 @@ const Home = ({ navigation }: any) => {
               <Text style={{ color: "#fefefe", fontSize: 16 }}>Hello User</Text>
               <Text
                 style={{ color: "#fefefe", fontSize: 18, fontWeight: "600" }}
+                onPress={()=>{ auth?.signOut()}}
               >
                 Hello User
               </Text>

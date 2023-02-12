@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
 import SafeArea from "../../components/SafeArea";
 import Navbar from "../../components/Navbar";
@@ -10,8 +10,8 @@ const KycScreen1 = ({navigation}:any) => {
   const phoneValidationSchema = yup.object().shape({
     phone: yup
       .string()
-      .min(10, "Please check phone number")
-      .max(10, "Please check phone number")
+      .min(10, "Phone number must be of 10 digits")
+      .max(10, "Phone number must be of 10 digits")
       .required(),
     // otp: yup.string().required('OTP is required'),
   });
@@ -66,7 +66,11 @@ const KycScreen1 = ({navigation}:any) => {
                   {errors.phone}
                 </Text>
               )}
-              <CustButton text="Next" onButtonPress={handleSubmit} />
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, position: 'absolute', bottom: 48, alignSelf: 'center' }}>
+                <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Next</Text>
+              </TouchableOpacity>
             </>
           )}
         </Formik>
@@ -94,18 +98,20 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     paddingHorizontal: 8,
+    marginTop: 32,
     flexDirection: "row",
     width: "99%",
-    borderWidth: 0.6,
+    borderWidth: 1,
     borderColor: "#aea0ae",
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: "center",
     paddingVertical: 8,
   },
   input: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 8,
     width: "100%",
-    color: "grey",
+    color: "#fefefe",
+    fontFamily: 'm'
   },
 });

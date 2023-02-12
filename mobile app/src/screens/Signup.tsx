@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 8,
     width: "100%",
-    color: "grey",
+    color: "#fefefe",
     fontFamily: 'm'
   },
 });

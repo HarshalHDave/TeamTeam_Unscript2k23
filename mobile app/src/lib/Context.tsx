@@ -16,6 +16,7 @@ interface AuthCon {
   user: User;
   signUp: (obj: any) => Promise<true>;
   signIn: (uname: string, pass: string) => void;
+  signOut: () => void;
   putIdPass: (id: string, pass: string) => void;
 }
 interface User {
@@ -44,7 +45,7 @@ interface User {
   userType: number;
   username: string;
   password: string;
-  token:string
+  token: string;
 }
 const appContext = createContext<AuthCon | null>(null);
 export function ContextProvider({ children }: any) {
@@ -120,6 +121,10 @@ function useContextProvided() {
     // AsyncStorage.setItem("kycSubmit", "true");
     return req.data.status;
   };
+  const signOut = async () => {
+    await AsyncStorage.removeItem("userCred");
+    setUser(undefined);
+  };
   const signIn = (uname: string, pass: string) => {
     axios
       .post(baseUrl + "admin/auth/login", {
@@ -136,7 +141,7 @@ function useContextProvided() {
             })
           );
           console.log(val.data.data);
-          setUser(val.data.data)
+          setUser(val.data.data);
           // setUser({
           //   email: val.data.data.email,
           //   name: val.data.data.name ? val.data.data.name : "barfi",
@@ -154,14 +159,15 @@ function useContextProvided() {
     setUser({
       username: id,
       password: pass,
-      isAuth: 'undefined',
+      isAuth: "undefined",
     });
   };
   return {
     user,
     signUp,
     putIdPass,
-    signIn
+    signIn,
+    signOut
   };
 }
 async function registerForPushNotificationsAsync() {

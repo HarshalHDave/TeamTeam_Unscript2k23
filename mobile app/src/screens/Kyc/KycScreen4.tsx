@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
 import SafeArea from "../../components/SafeArea";
 import { Formik } from "formik";
@@ -9,7 +9,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
   console.log(route.params);
   return (
     <SafeArea>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{height: '100%'}}>
         <Formik
           initialValues={{
             addrLine1: "",
@@ -41,7 +41,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
                   <TextInput
                     style={styles.input}
                     value={values.addrLine1}
-                    placeholder={"Address Line 1"}
+                    placeholder={"Eg: A101, Sargun Towers"}
                     onChangeText={handleChange("addrLine1")}
                     placeholderTextColor={"grey"}
                   />
@@ -75,7 +75,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
                   <TextInput
                     style={styles.input}
                     value={values.addrline2}
-                    placeholder={"Address Line 2"}
+                    placeholder={"Eg: Thane West"}
                     onChangeText={handleChange("addrline2")}
                     placeholderTextColor={"grey"}
                   />
@@ -110,7 +110,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
                     style={styles.input}
                     keyboardType="numeric"
                     value={values.pinCode}
-                    placeholder={"400077"}
+                    placeholder={"Eg: 400077"}
                     onChangeText={handleChange("pinCode")}
                     placeholderTextColor={"grey"}
                   />
@@ -145,7 +145,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
                     style={styles.input}
                     value={values.city}
                     // keyboardType='city-address'
-                    placeholder={"Mumbai"}
+                    placeholder={"Eg: Mumbai"}
                     onChangeText={handleChange("city")}
                     placeholderTextColor={"grey"}
                   />
@@ -184,7 +184,7 @@ const KycScreen4 = ({ navigation, route }: any) => {
                   <TextInput
                     style={[styles.input]}
                     value={values.state}
-                    placeholder={"Maharashtra"}
+                    placeholder={"Eg: Maharashtra"}
                     onChangeText={handleChange("state")}
                     placeholderTextColor={"grey"}
                   />
@@ -202,7 +202,11 @@ const KycScreen4 = ({ navigation, route }: any) => {
                   {errors.state}
                 </Text>
               )}
-              <CustButton text="Next" onButtonPress={handleSubmit} />
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center' }}>
+                <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Next</Text>
+              </TouchableOpacity>
             </>
           )}
         </Formik>
@@ -223,18 +227,20 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     paddingHorizontal: 8,
+    marginTop: 4,
     flexDirection: "row",
     width: "99%",
-    borderWidth: 0.6,
+    borderWidth: 1,
     borderColor: "#aea0ae",
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: "center",
     paddingVertical: 8,
   },
   input: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 8,
     width: "100%",
-    color: "grey",
+    color: "#fefefe",
+    fontFamily: 'm'
   },
 });

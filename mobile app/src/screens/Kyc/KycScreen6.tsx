@@ -37,7 +37,7 @@ const KycScreen6 = ({ navigation , route}: any) => {
                 style={{
                   fontSize: 15,
                   fontWeight: "bold",
-                  color: "white",
+                  color: "#fefefe",
                   marginBottom: 5,
                 }}
               >
@@ -47,7 +47,7 @@ const KycScreen6 = ({ navigation , route}: any) => {
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Enter Your Profession"}
+                    placeholder={"Eg: Student"}
                     value={values.profession}
                     autoCapitalize="none"
                     onChangeText={handleChange("profession")}
@@ -59,7 +59,7 @@ const KycScreen6 = ({ navigation , route}: any) => {
                 style={{
                   fontSize: 15,
                   fontWeight: "bold",
-                  color: "white",
+                  color: "#fefefe",
                   marginBottom: 5,
                 }}
               >
@@ -76,55 +76,59 @@ const KycScreen6 = ({ navigation , route}: any) => {
                 <TouchableOpacity
                   style={[
                     styles.expButton,
-                    values.experience == "2" && { backgroundColor: "pink" },
+                    values.experience == "2" && { borderColor: "#4896f0", borderWidth: 1.6 },
                   ]}
                   onPress={() => handleChange("experience")("2")}
                 >
-                  <Text style={{ color: "white" }}>0 - 2 Years</Text>
+                  <Text style={{ color: "#fefefe" }}>0 - 2 Years</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     styles.expButton,
-                    values.experience == "3" && { backgroundColor: "pink" },
+                    values.experience == "3" && { borderColor: "#4896f0", borderWidth: 1.6 },
                   ]}
                   onPress={() => handleChange("experience")("3")}
                 >
-                  <Text style={{ color: "white" }}>3 - 5 Years</Text>
+                  <Text style={{ color: "#fefefe" }}>3 - 5 Years</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     styles.expButton,
-                    values.experience == "5" && { backgroundColor: "pink" },
+                    values.experience == "5" && { borderColor: "#4896f0", borderWidth: 1.6 },
                   ]}
                   onPress={() => handleChange("experience")("5")}
                 >
-                  <Text style={{ color: "white" }}>5 - 9 Years</Text>
+                  <Text style={{ color: "#fefefe" }}>5 - 9 Years</Text>
                 </TouchableOpacity>
               </View>
               <Text
                 style={{
                   fontSize: 15,
                   fontWeight: "bold",
-                  color: "white",
+                  color: "#fefefe",
                   marginBottom: 5,
                 }}
               >
-                Your Income :
+                Your Income (per anum) :
               </Text>
               <View style={[styles.container]}>
                 <View style={[styles.searchBar]}>
                   <TextInput
                     style={styles.input}
-                    placeholder={"Your Income"}
+                    placeholder={"Eg: 500000"}
                     value={values.income}
                     keyboardType="numeric"
                     autoCapitalize="none"
                     onChangeText={handleChange("income")}
-                    placeholderTextColor={"grey"}
+                    placeholderTextColor={"#aea0ae"}
                   />
                 </View>
               </View>
-              <CustButton text="Submit" onButtonPress={handleSubmit} container_style={{alignSelf:'center'}} />
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', marginBottom: 64 }}>
+                <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Get Set GO !</Text>
+              </TouchableOpacity>
             </View>
           )}
         </Formik>
@@ -143,16 +147,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
   },
-  searchBar: {
-    paddingHorizontal: 8,
-    flexDirection: "row",
-    width: "99%",
-    borderWidth: 0.6,
-    borderColor: "#aea0ae",
-    borderRadius: 8,
-    alignItems: "center",
-    paddingVertical: 8,
-  },
   expButton: {
     paddingHorizontal: 8,
     flexDirection: "row",
@@ -162,11 +156,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
   },
-
+  searchBar: {
+    paddingHorizontal: 8,
+    marginTop: 4,
+    flexDirection: "row",
+    width: "99%",
+    borderWidth: 1,
+    borderColor: "#aea0ae",
+    borderRadius: 5,
+    alignItems: "center",
+    paddingVertical: 8,
+  },
   input: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 8,
     width: "100%",
-    color: "grey",
+    color: "#fefefe",
+    fontFamily: 'm'
   },
 });

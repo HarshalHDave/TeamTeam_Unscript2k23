@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useRef, useState } from "react";
 import SafeArea from "../../components/SafeArea";
 //@ts-ignore
@@ -14,15 +14,20 @@ const KycScreen2 = ({ navigation, route }: any) => {
         <OTPTextInput
           handleTextChange={(val: any) => setOtp(val)}
           textInputStyle={{ color: "white" }}
+          tintColor="#4896f0"         
         />
-        <CustButton
-          text="Next"
-          onButtonPress={() => {
+        <TouchableOpacity>
+          <Text style={{ fontFamily: 'm', fontSize: 14, color: '#aaa', textAlign: 'center', marginTop: 24 }}>Click here to resend OTP</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
             if (Otp.length == 4) {
               navigation.navigate("KycScreen3", { otp: Otp, ...route.params });
             }
           }}
-        />
+          style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, position: 'absolute', bottom: 48, alignSelf: 'center' }}>
+          <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Next</Text>
+        </TouchableOpacity>
       </>
     </SafeArea>
   );

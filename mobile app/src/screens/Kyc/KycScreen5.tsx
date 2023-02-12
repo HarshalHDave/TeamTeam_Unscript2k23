@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+//@ts-nocheck
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useRef, useState } from "react";
 import SafeArea from "../../components/SafeArea";
 import SignatureScreen from "react-native-signature-canvas";
@@ -76,14 +77,14 @@ const KycScreen5 = ({ navigation, route }: any) => {
   };
   const handleOK = (signature) => {
     setSignature(signature);
-    const path = FileSystem.cacheDirectory + makeid(10) +"sign.png";
+    const path = FileSystem.cacheDirectory + makeid(10) + "sign.png";
     FileSystem.writeAsStringAsync(
       path,
       signature.replace("data:image/png;base64,", ""),
       { encoding: FileSystem.EncodingType.Base64 }
     )
       .then(() => FileSystem.getInfoAsync(path))
-      .then((val)=>setsignFile(val.uri))
+      .then((val) => setsignFile(val.uri))
       .catch(console.error);
     // onOK(signature); // Callback from Component props
   };
@@ -130,23 +131,23 @@ const KycScreen5 = ({ navigation, route }: any) => {
     //@ts-ignore
     const imgLink = await uploadUriFirebase(image);
     const singLink = await uploadUriFirebase(signFile);
-    console.log({adLink,demLink,imgLink,singLink,...route.params})
-    navigation.navigate('KycScreen6',{adLink,demLink,imgLink,singLink,...route.params})
+    console.log({ adLink, demLink, imgLink, singLink, ...route.params })
+    navigation.navigate('KycScreen6', { adLink, demLink, imgLink, singLink, ...route.params })
     // console.log(image, aadharFile, dematFile, signature);
   };
 
   return (
     <SafeArea>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            // justifyContent: "space-between",
             alignItems: "center",
             marginTop: 15,
           }}
         >
-          <Text
+          {/* <Text
             style={{
               fontSize: 15,
               fontWeight: "bold",
@@ -154,21 +155,25 @@ const KycScreen5 = ({ navigation, route }: any) => {
             }}
           >
             Your Photo :
-          </Text>
-          <CustButton text="Upload" onButtonPress={pickImage} />
+          </Text> */}
+          <TouchableOpacity
+            onPress={() => pickImage()}
+            style={{ borderColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', borderWidth: 1.6 }}>
+            <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'm' }}>Upload your smiling photo</Text>
+          </TouchableOpacity>
         </View>
         {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Image source={{ uri: image }} style={{ width: 200, height: 200, alignSelf: 'center' }} />
         )}
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            // justifyContent: "space-between",
             alignItems: "center",
             marginTop: 15,
           }}
         >
-          <Text
+          {/* <Text
             style={{
               fontSize: 15,
               fontWeight: "bold",
@@ -176,8 +181,13 @@ const KycScreen5 = ({ navigation, route }: any) => {
             }}
           >
             Your Aadhar :
-          </Text>
-          <CustButton text="Upload" onButtonPress={() => pickDocument("a")} />
+          </Text> */}
+          {/* <CustButton text="Upload" onButtonPress={() => pickDocument("a")} /> */}
+          <TouchableOpacity
+            onPress={() => pickDocument("a")}
+            style={{ borderColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', borderWidth: 1.6 }}>
+            <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'm' }}>Upload Aadhar Card </Text>
+          </TouchableOpacity>
         </View>
         {AdharFileName && (
           <Text
@@ -193,13 +203,13 @@ const KycScreen5 = ({ navigation, route }: any) => {
         )}
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            // justifyContent: "space-between",
             alignItems: "center",
             marginTop: 15,
           }}
         >
-          <Text
+          {/* <Text
             style={{
               fontSize: 15,
               fontWeight: "bold",
@@ -207,8 +217,13 @@ const KycScreen5 = ({ navigation, route }: any) => {
             }}
           >
             Your DEMAT :
-          </Text>
-          <CustButton text="Upload" onButtonPress={() => pickDocument("d")} />
+          </Text> */}
+          {/* <CustButton text="Upload" onButtonPress={() => pickDocument("d")} /> */}
+          <TouchableOpacity
+            onPress={() => pickDocument("d")}
+            style={{ borderColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', borderWidth: 1.6 }}>
+            <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'm' }}>Upload DEMAT docs </Text>
+          </TouchableOpacity>
         </View>
         {DematFileName && (
           <Text
@@ -224,13 +239,13 @@ const KycScreen5 = ({ navigation, route }: any) => {
         )}
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            // flexDirection: "row",
+            // justifyContent: "space-between",
             alignItems: "center",
             marginTop: 15,
           }}
         >
-          <Text
+          {/* <Text
             style={{
               fontSize: 15,
               fontWeight: "bold",
@@ -238,16 +253,23 @@ const KycScreen5 = ({ navigation, route }: any) => {
             }}
           >
             Add Sign :
-          </Text>
-          <CustButton
+          </Text> */}
+          {/* <CustButton
             text="cust"
             onButtonPress={() => {
               setHasToSign(true);
             }}
-          />
+          /> */}
+          <TouchableOpacity
+            onPress={() => {
+              setHasToSign(true);
+            }}
+            style={{ borderColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', borderWidth: 1.6 }}>
+            <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'm' }}>Sign your documents</Text>
+          </TouchableOpacity>
         </View>
         {!hasToSign && signature ? (
-          <View style={{ backgroundColor: "white", alignSelf: "center" }}>
+          <View style={{ backgroundColor: "white", alignSelf: "center", marginTop: 16 }}>
             <Image
               resizeMode={"contain"}
               style={{ width: 335, height: 114 }}
@@ -278,11 +300,11 @@ const KycScreen5 = ({ navigation, route }: any) => {
             />
           </View>
         )}
-        <CustButton
-          text="Upload"
-          container_style={{ alignSelf: "center", marginTop: 10 }}
-          onButtonPress={uploadAll}
-        />
+        <TouchableOpacity
+          onPress={() => uploadAll()}
+          style={{ backgroundColor: '#4896f0', height: 48, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 100, alignSelf: 'center', position: 'absolute', bottom: 64 }}>
+          <Text style={{ color: '#fefefe', fontSize: 18, textAlign: 'center', fontFamily: 'mm' }}>Next</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeArea>
   );

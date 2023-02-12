@@ -34,7 +34,7 @@ export default KycStack;
 const styles = StyleSheet.create({
   background_main: {
     flex: 1,
-    backgroundColor: "#181A20",
+    backgroundColor: "#121213",
     paddingHorizontal: 10,
   },
 });
