@@ -7,6 +7,7 @@ import Bond from "../../screens/Bond";
 import Calculator from "../../screens/Calculator";
 import Compare from "../../screens/Compare";
 import Transaction from "../../screens/Transactions";
+import Profile from "../../screens/Profile";
 
 const HomeStack = () => {
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ const HomeStack = () => {
       <Stack.Screen name="Bond" component={Bond} />
       <Stack.Screen name="Calculator" component={Calculator} />
       <Stack.Screen name="Compare" component={Compare} />
+      <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Transaction" component={Transaction} />
     </Stack.Navigator>
   );

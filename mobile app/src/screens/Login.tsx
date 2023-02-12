@@ -46,6 +46,7 @@ const Login = ({ navigation }: any) => {
                     style={styles.input}
                     placeholder={"Your Password"}
                     value={values.pass}
+                    secureTextEntry
                     onChangeText={handleChange("pass")}
                     placeholderTextColor={"grey"}
                   />

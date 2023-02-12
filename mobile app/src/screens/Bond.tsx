@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   View,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from "react-native";
 import React, { useState } from "react";
 import SafeArea from "../components/SafeArea";
@@ -14,6 +15,17 @@ import CustButton from "../components/CustButton";
 import { useAppContext } from "../lib/Context";
 import axios from "axios";
 import { baseUrl } from "../lib/BaseUrl";
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from "react-native-chart-kit";
+const { width, height } = Dimensions.get("window");
+const randomRange = (maxNum) => Math.floor(Math.random() * maxNum) + 10;
+
 var combine = function (a, min) {
   var fn = function (n, src, got, all) {
     if (n == 0) {
@@ -35,6 +47,115 @@ var combine = function (a, min) {
   return all;
 };
 const Bond = ({ route }: any) => {
+  const dataRings = {
+    labels: ["AAA", "AA", "A"], // optional
+    data: [0.4, 0.6, 0.8],
+  };
+  const tempDates = [
+    "2023-01-02",
+    "2023-01-03",
+    "2023-01-04",
+    "2023-01-05",
+    "2023-01-06",
+    "2023-01-12",
+    "2023-01-18",
+    "2023-01-23",
+    "2023-01-26",
+    "2023-01-28",
+    "2023-01-30",
+    "2023-01-31",
+    "2023-02-12",
+    "2023-02-02",
+    "2023-02-06",
+    "2023-02-12",
+    "2023-02-14",
+    "2023-02-28",
+    "2023-02-30",
+    "2023-03-01",
+    "2023-03-05",
+    "2023-03-08",
+    "2023-03-10",
+    "2023-03-14",
+    "2023-03-18",
+    "2023-03-23",
+    "2023-03-24",
+    "2023-03-30",
+    "2023-04-02",
+    "2023-04-06",
+  ];
+  const commitsData = [];
+  tempDates.forEach((date) =>
+    commitsData.push({ date, count: randomRange(50) })
+  );
+
+  const chartConfigBonds = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
+
+  const dataBond = {
+    labels: ["2021", "2022"],
+    legend: ["Q1", "Q2", "Q3", "Q4"],
+    data: [
+      [60, 60, 60, 50],
+      [30, 30, 60, 40]
+    ],
+    barColors: ["#4896f0", "#2881e7", "#1356a4", "#0d4688"]
+  };
+
+  const dataBar = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+      },
+    ],
+  };
+
+  const chartConfigGit = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+  const chartConfigRings = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 146, 255, ${opacity})`,
+    strokeWidth: 4, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+  const chartConfigBar = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 146, 26, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+
+
+
+
+
   const data = route.params;
   const auth = useAppContext();
   // console.log(auth?.user.token)
@@ -42,7 +163,7 @@ const Bond = ({ route }: any) => {
   const [LtpPrice, setLtpPrice] = useState(data.ltP);
   const [Quantity, setQuantity] = useState("100");
   const [isSell, setIsSell] = useState(false);
-
+  const [Loading, setLoading] = useState(false);
   const SellingProcedure = () => {
     var sellId;
     axios
@@ -248,7 +369,6 @@ const Bond = ({ route }: any) => {
                                 setModalVisible(false);
                               }
                             });
-
                         }
                       });
                   }
@@ -475,37 +595,172 @@ const Bond = ({ route }: any) => {
     <SafeArea>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ marginTop: 16 }}>
-          <Text style={{ color: "#e8e8e8", fontFamily: 'm', fontSize: 20, marginBottom: 2 }}>{data.meta.companyName}</Text>
-          <Text style={{ color: '#eee', fontFamily: 'mm', fontSize: 24, marginBottom: 0 }}>{data.symbol} {data.series}</Text>
-          <Text style={{ color: '#999', fontFamily: 'm', fontSize: 16, marginBottom: 8 }}>{data.bond_type}</Text>
-          <Text style={{ color: '#ddd', fontFamily: 'm', fontSize: 16, marginBottom: 8 }}>Coupon Rate :{data.coupr}%</Text>
-          <Text style={{ color: "#1cff1c", fontFamily: 'm', fontSize: 16, marginBottom: 8, textAlign: 'center' }}>{data.credit_rating}</Text>
-          <Text style={{ color: 'white', fontFamily: 'm', fontSize: 18, marginBottom: 8, }}>Maturity Date: {data.maturity_date}</Text>
-          <Text style={{ color: "white", fontFamily: 'm', fontSize: 16, marginBottom: 8 }}>Face Value : {data.face_value}</Text>
+          <Text
+            style={{
+              color: "#e8e8e8",
+              fontFamily: "m",
+              fontSize: 20,
+              marginBottom: 2,
+            }}
+          >
+            {data.meta.companyName}
+          </Text>
+          <Text
+            style={{
+              color: "#eee",
+              fontFamily: "mm",
+              fontSize: 24,
+              marginBottom: 0,
+            }}
+          >
+            {data.symbol} {data.series}
+          </Text>
+          <Text
+            style={{
+              color: "#999",
+              fontFamily: "m",
+              fontSize: 16,
+              marginBottom: 8,
+            }}
+          >
+            {data.bond_type}
+          </Text>
+          <Text
+            style={{
+              color: "#ddd",
+              fontFamily: "m",
+              fontSize: 16,
+              marginBottom: 8,
+            }}
+          >
+            Coupon Rate :{data.coupr}%
+          </Text>
+          <Text
+            style={{
+              color: "#1cff1c",
+              fontFamily: "m",
+              fontSize: 16,
+              marginBottom: 8,
+              textAlign: "center",
+            }}
+          >
+            {data.credit_rating}
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "m",
+              fontSize: 18,
+              marginBottom: 8,
+            }}
+          >
+            Maturity Date: {data.maturity_date}
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "m",
+              fontSize: 16,
+              marginBottom: 8,
+            }}
+          >
+            Face Value : {data.face_value}
+          </Text>
 
-          <Text style={{ color: 'white', fontFamily: 'm', fontSize: 18, marginBottom: 4, }}>Other Debt Series</Text>
-          {// @ts-ignore
-            data.meta.debtSeries.map((item) => {
-              return (
-                <View key={item}>
-                  <Text style={{ fontFamily: 'm', fontSize: 14, color: "#fefefe" }}>
-                    {item}
-                  </Text>
-                </View>
-              )
-            })}
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "m",
+              fontSize: 18,
+              marginBottom: 4,
+            }}
+          >
+            Other Debt Series
+          </Text>
 
-          <Text style={{ color: 'white', fontFamily: 'm', fontSize: 18, marginBottom: 4, marginTop: 16 }}>Suspended Debt Series</Text>
-          {// @ts-ignore
-            data.meta.tempSuspendedSeries.map((item) => {
-              return (
-                <View key={item}>
-                  <Text style={{ fontFamily: 'm', fontSize: 14, color: "#fefefe" }}>
-                    {item}
+          <View style={{ flexDirection: "row", flexWrap: "wrap", width: '95%' }}>
+            {
+              // @ts-ignore
+              data.meta.debtSeries.map((item) => {
+                return (
+                  <Text
+                    style={{ fontFamily: "m", fontSize: 14, color: "#fefefe" }}
+                  >
+                    {item} {" ,"}
                   </Text>
-                </View>
-              )
-            })}
+                );
+              })
+            }
+          </View>
+
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "m",
+              fontSize: 18,
+              marginBottom: 4,
+              marginTop: 16,
+            }}
+          >
+            Suspended Debt Series
+          </Text>
+
+          <View style={{ flexDirection: "row", flexWrap: 'wrap', width: '95%' }}>
+            {
+              // @ts-ignore
+              data.meta.tempSuspendedSeries.map((item) => {
+                return (
+                  <Text
+                    style={{ fontFamily: "m", fontSize: 14, color: "#fefefe" }}
+                  >
+                    {item} {" ,"}
+                  </Text>
+                );
+              })
+            }
+          </View>
+          <ContributionGraph
+            values={commitsData}
+            endDate={new Date("2023-04-01")}
+            numDays={94}
+            width={width}
+            height={220}
+            chartConfig={chartConfigGit}
+          />
+          <ProgressChart
+            data={dataRings}
+            width={width - 56}
+            height={220}
+            strokeWidth={16}
+            radius={32}
+            chartConfig={chartConfigRings}
+            hideLegend={false}
+          />
+          <BarChart
+            data={dataBar}
+            width={width}
+            height={220}
+            yAxisLabel=""
+            chartConfig={chartConfigBar}
+            verticalLabelRotation={30}
+          />
+          <View style={{ height: 56, width: 56, padding: 16 }}>
+            <Text>hii</Text>
+          </View>
+          <StackedBarChart
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+              paddingBottom: 56
+            }}
+            data={dataBond}
+            width={400}
+            height={220}
+            chartConfig={chartConfigBonds}
+          />
+          <View style={{height: 128, width: 56, padding: 16}}>
+            <Text>hii</Text>
+          </View>
         </View>
       </ScrollView>
 
@@ -513,14 +768,16 @@ const Bond = ({ route }: any) => {
         style={{
           flexDirection: "row",
           justifyContent: "space-evenly",
+          alignItems: "center",
           marginVertical: 15,
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           paddingBottom: 16,
           paddingTop: 16,
           marginBottom: -4,
-          width: '100%',
-          backgroundColor: '#121213',
+          width: "100%",
+          backgroundColor: "#121213",
+          alignSelf: 'center'
         }}
       >
         <CustButton
@@ -530,8 +787,16 @@ const Bond = ({ route }: any) => {
           }}
           text="Buy"
           text_style={{}}
-          container_style={{ borderRadius: 8, width: '42%', alignItems: 'center', justifyContent: 'center', backgroundColor: '#121213', borderWidth: 2, borderColor: '#1cff1c' }}
-          text_style={{ fontFamily: 'mm', color: '#fefefe', fontSize: 16 }}
+          container_style={{
+            borderRadius: 8,
+            width: "45%",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#121213",
+            borderWidth: 2,
+            borderColor: "#1cff1c",
+          }}
+          text_style={{ fontFamily: "mm", color: "#fefefe", fontSize: 16 }}
         />
         <CustButton
           onButtonPress={() => {
@@ -539,8 +804,16 @@ const Bond = ({ route }: any) => {
             setIsSell(true);
           }}
           text="Sell"
-          container_style={{ borderRadius: 8, width: '42%', alignItems: 'center', justifyContent: 'center', backgroundColor: '#121213', borderWidth: 2, borderColor: '#ff1c1c' }}
-          text_style={{ fontFamily: 'm', color: '#fefefe', fontSize: 16 }}
+          container_style={{
+            borderRadius: 8,
+            width: "45%",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#121213",
+            borderWidth: 2,
+            borderColor: "#ff1c1c",
+          }}
+          text_style={{ fontFamily: "m", color: "#fefefe", fontSize: 16 }}
         />
       </View>
       <Modal

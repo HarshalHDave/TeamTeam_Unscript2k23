@@ -44,7 +44,7 @@ export default class ExampleOne extends Component {
             backgroundGradientFromOpacity: 0,
             backgroundGradientTo: "#08130D",
             backgroundGradientToOpacity: 0.5,
-            color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             strokeWidth: 2, // optional, default 3
             barPercentage: 0.5,
             useShadowColorFromDataset: false // optional
@@ -57,7 +57,7 @@ export default class ExampleOne extends Component {
                 [60, 60, 60, 50],
                 [30, 30, 60, 40]
             ],
-            barColors: ["#afa", "#7f7", "#6f6", "#2f2"]
+            barColors: ["#4896f0", "#2881e7", "#1356a4", "#0d4688"]
         };
         return (
             <ScrollView style={styles.container}>
@@ -87,5 +87,5 @@ const styles = StyleSheet.create({
     container: { flex: 1, padding: 16, paddingTop: 32, backgroundColor: '#121213' },
     head: { height: 40, backgroundColor: '#1F222A' },
     textH: { margin: 6, color: '#fefefe', textAlign: 'center', fontFamily: 'mb' },
-    text: { margin: 6, color: '#fefefe', textAlign: 'center', fontFamily: 'm' }
+    text: { margin: 6, color: '#eee', textAlign: 'center', fontFamily: 'm' }
 });

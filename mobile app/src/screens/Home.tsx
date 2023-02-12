@@ -227,7 +227,7 @@ const Home = ({ navigation }: any) => {
               }}
             />
             <View>
-              <Text style={{ color: "#fefefe", fontSize: 16 }}>Hello User</Text>
+              <Text style={{ color: "#fefefe", fontSize: 16 }}>{auth?.user.username}</Text>
               <Text
                 style={{ color: "#fefefe", fontSize: 18, fontWeight: "600" }}
                 onPress={()=>{ auth?.signOut()}}
@@ -248,9 +248,10 @@ const Home = ({ navigation }: any) => {
               <MaterialCommunityIcons name="file-compare" size={25} color="#fefefe" />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Transaction')}
+              onPress={() => navigation.navigate('Profile')}
               style={{ width: 32, height: 32, borderRadius: 32 }}>
-              <MaterialCommunityIcons name="calendar-clock" size={25} color="#fefefe" />
+                <Ionicons name="person" size={25} color="#fefefe" />
+              {/* <MaterialCommunityIcons name="calendar-clock" size={25} color="#fefefe" /> */}
             </TouchableOpacity>
           </View>
         </View>
@@ -287,7 +288,7 @@ const Home = ({ navigation }: any) => {
               letterSpacing: 2.4,
             }}
           >
-            ₹1000
+            ₹{auth?.portFolioAmt}
           </Text>
         </View>
 

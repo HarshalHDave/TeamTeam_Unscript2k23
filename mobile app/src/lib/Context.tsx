@@ -18,6 +18,7 @@ interface AuthCon {
   signIn: (uname: string, pass: string) => void;
   signOut: () => void;
   putIdPass: (id: string, pass: string) => void;
+  portFolioAmt:number
 }
 interface User {
   aadhar_img: string;
@@ -46,6 +47,7 @@ interface User {
   username: string;
   password: string;
   token: string;
+  portFolioAmt:number
 }
 const appContext = createContext<AuthCon | null>(null);
 export function ContextProvider({ children }: any) {
@@ -67,6 +69,7 @@ Notifications.setNotificationHandler({
 function useContextProvided() {
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
+  const [portFolioAmt, setPortFolioAmt] = useState(0);
   useEffect(() => {
     AsyncStorage.getItem("userCred").then((val) => {
       if (val) {
@@ -74,6 +77,7 @@ function useContextProvided() {
         signIn(userCred.username, userCred.password);
       }
     });
+    
   }, []);
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => console.log(token));
@@ -95,7 +99,29 @@ function useContextProvided() {
     };
   }, []);
   const [user, setUser] = useState<User | null>();
-
+  useEffect(() => {
+    console.log(user?.token)
+    axios
+      .post(
+        baseUrl + "admin/open_order/list",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + user?.token,
+          },
+        }
+      )
+      .then((val) => {
+        // console.log(val.data.data.data)
+        var sum = 0;
+        val.data.data.data.map((item: any) => {
+          sum += Number(item.qty) * Number(item.strike_price);
+        });
+        setPortFolioAmt(sum)
+        console.log(sum)
+      });
+  }, [user])
+  
   const signUp = async (obj: any) => {
     const req = await axios.post(baseUrl + "admin/auth/register", {
       username: user?.username,
@@ -162,12 +188,15 @@ function useContextProvided() {
       isAuth: "undefined",
     });
   };
+
+  const setPortFolio = (amt) => {};
   return {
     user,
     signUp,
     putIdPass,
     signIn,
-    signOut
+    signOut,
+    portFolioAmt
   };
 }
 async function registerForPushNotificationsAsync() {

@@ -4,6 +4,7 @@ import SafeArea from "../components/SafeArea";
 import Slider from '@react-native-community/slider';
 import Navbar from "../components/Navbar";
 import { processFontFamily } from "expo-font";
+import { number } from "yup";
 
 const Calculator = () => {
     const [amnt, setAmnt] = useState(0);
@@ -21,7 +22,7 @@ const Calculator = () => {
         for (let i = 1; i <= time; i++) {
             interesti += kisht + (12 - (timei * i)) * kisht * 0.005;
         }
-        return isNaN(interesti) ? 0 : interesti;
+        return isNaN(interesti) ? 0 : interesti.toFixed(3);
     }
 
 
@@ -66,12 +67,12 @@ const Calculator = () => {
                 />
 
                 <View style={{padding: 5, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Text style={{ fontFamily: 'm', fontSize: 14, color: '#fefefe' }}>Coupon Rate: {roi}%</Text>
+                    <Text style={{ fontFamily: 'm', fontSize: 14, color: '#fefefe' }}>Coupon Rate: {roi && roi.toFixed(2)}%</Text>
                     <Text style={{ fontFamily: 'm', fontSize: 14, color: '#fefefe' }}>Annual Splits: {split}</Text>
                 </View>
                 
                 <Text style={{ fontFamily: 'mb', fontSize: 24, color: '#fefefe' }}>Intrest gained: ₹{interest(amnt, roi, split)}</Text>
-                <Text style={{ fontFamily: 'mb', fontSize: 24, color: '#fefefe' }}>Total worth: ₹{interest(amnt, roi, split ) + amnt}</Text>
+                <Text style={{ fontFamily: 'mb', fontSize: 24, color: '#fefefe' }}>Total worth: ₹{Number(interest(amnt, roi, split )) + Number(amnt)}</Text>
 
             </>
         </SafeArea>
