@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../../screens/Home";
 import SeeAll from "../../screens/SeeAll";
 import Bond from "../../screens/Bond";
+import Calculator from "../../screens/Calculator";
+import Compare from "../../screens/Compare";
+import Transaction from "../../screens/Transactions";
 
 const HomeStack = () => {
   const Stack = createNativeStackNavigator();
@@ -13,6 +16,9 @@ const HomeStack = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="SeeAll" component={SeeAll} />
       <Stack.Screen name="Bond" component={Bond} />
+      <Stack.Screen name="Calculator" component={Calculator} />
+      <Stack.Screen name="Compare" component={Compare} />
+      <Stack.Screen name="Transaction" component={Transaction} />
     </Stack.Navigator>
   );
 };
