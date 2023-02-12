@@ -1,0 +1,11 @@
+*.csv/**
+venv
+
+# ignore all csv
+*.csv
+
+# ignore all csv in the root directory
+/*.csv
+
+# ignore all csv in the root directory and all subdirectories
+**/*.csv
